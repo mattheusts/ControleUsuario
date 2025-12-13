@@ -1,5 +1,4 @@
 package com.ufes.controleusuario.repository;
-
 import com.ufes.controleusuario.infra.SQLiteConnection;
 import com.ufes.controleusuario.model.User;
 import java.sql.Connection;
@@ -8,9 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 public class UserRepositorySQLite implements IUserRepository {
-
   @Override
   public void save(User user) {
     String sql = "INSERT INTO users(nome, usuario, senha, tipo, status, data_cadastro) VALUES(?, ?, ?, ?, ?, ?)";
@@ -27,7 +24,6 @@ public class UserRepositorySQLite implements IUserRepository {
       e.printStackTrace();
     }
   }
-
   @Override
   public void update(User user) {
     String sql = "UPDATE users SET nome = ?, usuario = ?, senha = ?, tipo = ?, status = ?, data_cadastro = ? WHERE id = ?";
@@ -45,7 +41,6 @@ public class UserRepositorySQLite implements IUserRepository {
       e.printStackTrace();
     }
   }
-
   @Override
   public void delete(User user) {
     String sql = "DELETE FROM users WHERE id = ?";
@@ -57,7 +52,6 @@ public class UserRepositorySQLite implements IUserRepository {
       e.printStackTrace();
     }
   }
-
   @Override
   public User findByUsername(String username) {
     String sql = "SELECT * FROM users WHERE usuario = ?";
@@ -68,7 +62,6 @@ public class UserRepositorySQLite implements IUserRepository {
       if (rs.next()) {
         String dateStr = rs.getString("data_cadastro");
         java.time.LocalDate date = dateStr != null ? java.time.LocalDate.parse(dateStr) : null;
-
         return new User(
             rs.getInt("id"),
             rs.getString("nome"),
@@ -83,7 +76,6 @@ public class UserRepositorySQLite implements IUserRepository {
     }
     return null;
   }
-
   @Override
   public List<User> findAll() {
     List<User> users = new ArrayList<>();
@@ -94,7 +86,6 @@ public class UserRepositorySQLite implements IUserRepository {
       while (rs.next()) {
         String dateStr = rs.getString("data_cadastro");
         java.time.LocalDate date = dateStr != null ? java.time.LocalDate.parse(dateStr) : null;
-
         users.add(new User(
             rs.getInt("id"),
             rs.getString("nome"),
@@ -109,7 +100,6 @@ public class UserRepositorySQLite implements IUserRepository {
     }
     return users;
   }
-
   @Override
   public int countAdmins() {
     String sql = "SELECT COUNT(*) FROM users WHERE tipo = 'ADMIN'";
@@ -124,7 +114,6 @@ public class UserRepositorySQLite implements IUserRepository {
     }
     return 0;
   }
-
   @Override
   public boolean hasUsers() {
     String sql = "SELECT 1 FROM users LIMIT 1";
@@ -137,7 +126,6 @@ public class UserRepositorySQLite implements IUserRepository {
     }
     return false;
   }
-
   @Override
   public User findById(int id) {
     String sql = "SELECT * FROM users WHERE id = ?";
@@ -148,7 +136,6 @@ public class UserRepositorySQLite implements IUserRepository {
       if (rs.next()) {
         String dateStr = rs.getString("data_cadastro");
         java.time.LocalDate date = dateStr != null ? java.time.LocalDate.parse(dateStr) : null;
-
         return new User(
             rs.getInt("id"),
             rs.getString("nome"),
@@ -163,7 +150,6 @@ public class UserRepositorySQLite implements IUserRepository {
     }
     return null;
   }
-
   @Override
   public List<User> findByStatus(String status) {
     List<User> users = new ArrayList<>();
@@ -175,7 +161,6 @@ public class UserRepositorySQLite implements IUserRepository {
       while (rs.next()) {
         String dateStr = rs.getString("data_cadastro");
         java.time.LocalDate date = dateStr != null ? java.time.LocalDate.parse(dateStr) : null;
-
         users.add(new User(
             rs.getInt("id"),
             rs.getString("nome"),
@@ -190,12 +175,10 @@ public class UserRepositorySQLite implements IUserRepository {
     }
     return users;
   }
-
   @Override
   public List<User> findAuthorizedUsers() {
     return findByStatus("AUTORIZADO");
   }
-
   @Override
   public User findFirstAdmin() {
     String sql = "SELECT * FROM users WHERE tipo = 'ADMIN' ORDER BY id ASC LIMIT 1";
@@ -205,7 +188,6 @@ public class UserRepositorySQLite implements IUserRepository {
       if (rs.next()) {
         String dateStr = rs.getString("data_cadastro");
         java.time.LocalDate date = dateStr != null ? java.time.LocalDate.parse(dateStr) : null;
-
         return new User(
             rs.getInt("id"),
             rs.getString("nome"),
@@ -220,7 +202,6 @@ public class UserRepositorySQLite implements IUserRepository {
     }
     return null;
   }
-
   @Override
   public void deleteAll() {
     String sql = "DELETE FROM users";

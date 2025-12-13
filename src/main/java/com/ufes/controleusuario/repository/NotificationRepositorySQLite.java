@@ -1,5 +1,4 @@
 package com.ufes.controleusuario.repository;
-
 import com.ufes.controleusuario.infra.SQLiteConnection;
 import com.ufes.controleusuario.model.Notification;
 import java.sql.Connection;
@@ -9,13 +8,10 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 public class NotificationRepositorySQLite implements INotificationRepository {
-
     public NotificationRepositorySQLite() {
         createTableIfNotExists();
     }
-
     private void createTableIfNotExists() {
         String sql = """
             CREATE TABLE IF NOT EXISTS notifications (
@@ -34,7 +30,6 @@ public class NotificationRepositorySQLite implements INotificationRepository {
             e.printStackTrace();
         }
     }
-
     @Override
     public void save(Notification notification) {
         String sql = "INSERT INTO notifications(user_id, message, read, created_at) VALUES(?, ?, ?, ?)";
@@ -49,7 +44,6 @@ public class NotificationRepositorySQLite implements INotificationRepository {
             e.printStackTrace();
         }
     }
-
     @Override
     public void update(Notification notification) {
         String sql = "UPDATE notifications SET user_id = ?, message = ?, read = ?, created_at = ? WHERE id = ?";
@@ -65,7 +59,6 @@ public class NotificationRepositorySQLite implements INotificationRepository {
             e.printStackTrace();
         }
     }
-
     @Override
     public void delete(Notification notification) {
         String sql = "DELETE FROM notifications WHERE id = ?";
@@ -77,7 +70,6 @@ public class NotificationRepositorySQLite implements INotificationRepository {
             e.printStackTrace();
         }
     }
-
     @Override
     public List<Notification> findByUserId(int userId) {
         List<Notification> notifications = new ArrayList<>();
@@ -94,7 +86,6 @@ public class NotificationRepositorySQLite implements INotificationRepository {
         }
         return notifications;
     }
-
     @Override
     public int countUnreadByUserId(int userId) {
         String sql = "SELECT COUNT(*) FROM notifications WHERE user_id = ? AND read = 0";
@@ -110,7 +101,6 @@ public class NotificationRepositorySQLite implements INotificationRepository {
         }
         return 0;
     }
-
     @Override
     public int countByUserId(int userId) {
         String sql = "SELECT COUNT(*) FROM notifications WHERE user_id = ?";
@@ -126,7 +116,6 @@ public class NotificationRepositorySQLite implements INotificationRepository {
         }
         return 0;
     }
-
     @Override
     public void markAsRead(int notificationId) {
         String sql = "UPDATE notifications SET read = 1 WHERE id = ?";
@@ -138,7 +127,6 @@ public class NotificationRepositorySQLite implements INotificationRepository {
             e.printStackTrace();
         }
     }
-
     @Override
     public void markAllAsReadByUserId(int userId) {
         String sql = "UPDATE notifications SET read = 1 WHERE user_id = ?";
@@ -150,11 +138,9 @@ public class NotificationRepositorySQLite implements INotificationRepository {
             e.printStackTrace();
         }
     }
-
     private Notification mapResultSetToNotification(ResultSet rs) throws SQLException {
         String dateStr = rs.getString("created_at");
         LocalDateTime createdAt = dateStr != null ? LocalDateTime.parse(dateStr) : null;
-
         return new Notification(
             rs.getInt("id"),
             rs.getInt("user_id"),
@@ -164,4 +150,3 @@ public class NotificationRepositorySQLite implements INotificationRepository {
         );
     }
 }
-
