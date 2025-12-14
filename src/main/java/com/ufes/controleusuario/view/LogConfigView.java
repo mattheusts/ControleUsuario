@@ -1,8 +1,10 @@
 package com.ufes.controleusuario.view;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+
 public class LogConfigView extends JInternalFrame {
     private JRadioButton rbCSV;
     private JRadioButton rbJSONL;
@@ -11,6 +13,7 @@ public class LogConfigView extends JInternalFrame {
     private JButton btnCancel;
     private JLabel lblCurrentFormat;
     private JTextArea txtPreview;
+
     public LogConfigView() {
         super("Configuração de Logs", true, true, true, true);
         setSize(450, 380);
@@ -18,6 +21,7 @@ public class LogConfigView extends JInternalFrame {
         initComponents();
         setLocation(150, 80);
     }
+
     private void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -39,13 +43,12 @@ public class LogConfigView extends JInternalFrame {
         JPanel radioPanel = new JPanel(new GridLayout(2, 1, 10, 10));
         radioPanel.setBackground(new Color(250, 250, 250));
         radioPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200)),
-            "Selecione o formato",
-            javax.swing.border.TitledBorder.LEFT,
-            javax.swing.border.TitledBorder.TOP,
-            new Font("Segoe UI", Font.BOLD, 12),
-            new Color(70, 70, 70)
-        ));
+                BorderFactory.createLineBorder(new Color(200, 200, 200)),
+                "Selecione o formato",
+                javax.swing.border.TitledBorder.LEFT,
+                javax.swing.border.TitledBorder.TOP,
+                new Font("Segoe UI", Font.BOLD, 12),
+                new Color(70, 70, 70)));
         rbCSV = new JRadioButton("CSV (separado por ponto e vírgula)");
         rbCSV.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         rbCSV.setBackground(new Color(250, 250, 250));
@@ -84,8 +87,8 @@ public class LogConfigView extends JInternalFrame {
         mainPanel.add(formatPanel, BorderLayout.CENTER);
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonsPanel.setBackground(new Color(250, 250, 250));
-        btnCancel = createButton("Cancelar", new Color(100, 100, 100));
-        btnSave = createButton("💾 Salvar", new Color(46, 125, 50));
+        btnCancel = createButton("Cancelar");
+        btnSave = createButton("💾 Salvar");
         buttonsPanel.add(btnCancel);
         buttonsPanel.add(btnSave);
         mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
@@ -93,25 +96,26 @@ public class LogConfigView extends JInternalFrame {
         rbCSV.addActionListener(e -> updatePreview());
         rbJSONL.addActionListener(e -> updatePreview());
     }
-    private JButton createButton(String text, Color bgColor) {
+
+    private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return button;
     }
+
     private void updatePreview() {
         if (rbCSV.isSelected()) {
             txtPreview.setText("2024-01-15T10:30:45;LOGIN_SUCCESS;Usuário logado: admin\n" +
-                               "2024-01-15T10:31:02;CREATE_USER;Novo usuário criado: joao");
+                    "2024-01-15T10:31:02;CREATE_USER;Novo usuário criado: joao");
         } else if (rbJSONL.isSelected()) {
-            txtPreview.setText("{\"timestamp\": \"2024-01-15T10:30:45\", \"type\": \"LOGIN_SUCCESS\", \"message\": \"Usuário logado: admin\"}\n" +
-                               "{\"timestamp\": \"2024-01-15T10:31:02\", \"type\": \"CREATE_USER\", \"message\": \"Novo usuário criado: joao\"}");
+            txtPreview.setText(
+                    "{\"timestamp\": \"2024-01-15T10:30:45\", \"type\": \"LOGIN_SUCCESS\", \"message\": \"Usuário logado: admin\"}\n"
+                            +
+                            "{\"timestamp\": \"2024-01-15T10:31:02\", \"type\": \"CREATE_USER\", \"message\": \"Novo usuário criado: joao\"}");
         }
     }
+
     public String getSelectedFormat() {
         if (rbCSV.isSelected()) {
             return "CSV";
@@ -120,6 +124,7 @@ public class LogConfigView extends JInternalFrame {
         }
         return null;
     }
+
     public void setCurrentFormat(String format) {
         lblCurrentFormat.setText("Formato atual: " + format);
         if ("CSV".equalsIgnoreCase(format)) {
@@ -129,21 +134,27 @@ public class LogConfigView extends JInternalFrame {
         }
         updatePreview();
     }
+
     public void setSaveListener(ActionListener listener) {
         btnSave.addActionListener(listener);
     }
+
     public void setCancelListener(ActionListener listener) {
         btnCancel.addActionListener(listener);
     }
+
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
+
     public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
     }
+
     public void showSuccess(String message) {
         JOptionPane.showMessageDialog(this, message, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
+
     public void close() {
         dispose();
     }

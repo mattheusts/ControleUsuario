@@ -1,14 +1,17 @@
 package com.ufes.controleusuario.view;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+
 public class NotificationReadView extends JInternalFrame {
     private JTextArea txtMessage;
     private JLabel lblDate;
     private JLabel lblStatus;
     private JButton btnMarkAsRead;
     private JButton btnClose;
+
     public NotificationReadView() {
         super("Leitura de Notificação", true, true, true, true);
         setSize(500, 400);
@@ -16,6 +19,7 @@ public class NotificationReadView extends JInternalFrame {
         initComponents();
         setLocation(150, 80);
     }
+
     private void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -43,13 +47,12 @@ public class NotificationReadView extends JInternalFrame {
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(new Color(250, 250, 250));
         contentPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(new Color(189, 195, 199)),
-            "Mensagem",
-            javax.swing.border.TitledBorder.LEFT,
-            javax.swing.border.TitledBorder.TOP,
-            new Font("Segoe UI", Font.BOLD, 12),
-            new Color(52, 73, 94)
-        ));
+                BorderFactory.createLineBorder(new Color(189, 195, 199)),
+                "Mensagem",
+                javax.swing.border.TitledBorder.LEFT,
+                javax.swing.border.TitledBorder.TOP,
+                new Font("Segoe UI", Font.BOLD, 12),
+                new Color(52, 73, 94)));
         txtMessage = new JTextArea();
         txtMessage.setEditable(false);
         txtMessage.setLineWrap(true);
@@ -63,30 +66,30 @@ public class NotificationReadView extends JInternalFrame {
         mainPanel.add(contentPanel, BorderLayout.CENTER);
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         buttonsPanel.setBackground(new Color(250, 250, 250));
-        btnMarkAsRead = createButton("✓ Marcar como Lida", new Color(46, 204, 113));
-        btnClose = createButton("Fechar", new Color(149, 165, 166));
+        btnMarkAsRead = createButton("✓ Marcar como Lida");
+        btnClose = createButton("Fechar");
         buttonsPanel.add(btnMarkAsRead);
         buttonsPanel.add(btnClose);
         mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
         setContentPane(mainPanel);
     }
-    private JButton createButton(String text, Color bgColor) {
+
+    private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return button;
     }
+
     public void setMessage(String message) {
         txtMessage.setText(message);
         txtMessage.setCaretPosition(0);
     }
+
     public void setDate(String date) {
         lblDate.setText("Data: " + date);
     }
+
     public void setReadStatus(boolean isRead) {
         if (isRead) {
             lblStatus.setText("Status: Lida");
@@ -100,21 +103,27 @@ public class NotificationReadView extends JInternalFrame {
             btnMarkAsRead.setBackground(new Color(46, 204, 113));
         }
     }
+
     public void setMarkAsReadListener(ActionListener listener) {
         btnMarkAsRead.addActionListener(listener);
     }
+
     public void setCloseListener(ActionListener listener) {
         btnClose.addActionListener(listener);
     }
+
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
+
     public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
     }
+
     public void showSuccess(String message) {
         JOptionPane.showMessageDialog(this, message, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
+
     public void close() {
         dispose();
     }

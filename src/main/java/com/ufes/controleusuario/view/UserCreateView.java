@@ -1,8 +1,10 @@
 package com.ufes.controleusuario.view;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+
 public class UserCreateView extends JInternalFrame {
     private JTextField txtNome;
     private JTextField txtUsername;
@@ -13,6 +15,7 @@ public class UserCreateView extends JInternalFrame {
     private JButton btnLimpar;
     private JButton btnCancelar;
     private JLabel lblPasswordStrength;
+
     public UserCreateView() {
         super("Cadastrar Novo Usuário", true, true, true, true);
         setSize(450, 380);
@@ -20,6 +23,7 @@ public class UserCreateView extends JInternalFrame {
         initComponents();
         setLocation(50, 50);
     }
+
     private void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
@@ -83,72 +87,81 @@ public class UserCreateView extends JInternalFrame {
         mainPanel.add(formPanel, BorderLayout.CENTER);
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonsPanel.setBackground(new Color(250, 250, 250));
-        btnCadastrar = createButton("Cadastrar", new Color(46, 125, 50));
-        btnLimpar = createButton("Limpar", new Color(100, 100, 100));
-        btnCancelar = createButton("Cancelar", new Color(180, 60, 60));
+        btnCadastrar = createButton("Cadastrar");
+        btnLimpar = createButton("Limpar");
+        btnCancelar = createButton("Cancelar");
         buttonsPanel.add(btnLimpar);
         buttonsPanel.add(btnCancelar);
         buttonsPanel.add(btnCadastrar);
         mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
         setContentPane(mainPanel);
     }
+
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Segoe UI", Font.BOLD, 12));
         label.setForeground(new Color(60, 60, 60));
         return label;
     }
-    private JButton createButton(String text, Color bgColor) {
+
+    private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.setOpaque(true);
-        button.setBorderPainted(false);
         return button;
     }
+
     public String getNome() {
         return txtNome.getText().trim();
     }
+
     public String getUsername() {
         return txtUsername.getText().trim();
     }
+
     public String getSenha() {
         return new String(txtSenha.getPassword());
     }
+
     public String getConfirmaSenha() {
         return new String(txtConfirmaSenha.getPassword());
     }
+
     public String getPerfil() {
         return (String) cmbPerfil.getSelectedItem();
     }
+
     public void setPerfilEnabled(boolean enabled) {
         cmbPerfil.setEnabled(enabled);
     }
+
     public void setAdminOptionVisible(boolean visible) {
         if (!visible) {
             cmbPerfil.removeItem("ADMIN");
         }
     }
+
     public void setPasswordStrength(String message, Color color) {
         lblPasswordStrength.setText(message);
         lblPasswordStrength.setForeground(color);
     }
+
     public void setCadastrarListener(ActionListener listener) {
         btnCadastrar.addActionListener(listener);
     }
+
     public void setLimparListener(ActionListener listener) {
         btnLimpar.addActionListener(listener);
     }
+
     public void setCancelarListener(ActionListener listener) {
         btnCancelar.addActionListener(listener);
     }
+
     public void setSenhaKeyListener(java.awt.event.KeyListener listener) {
         txtSenha.addKeyListener(listener);
     }
+
     public void clearFields() {
         txtNome.setText("");
         txtUsername.setText("");
@@ -158,15 +171,19 @@ public class UserCreateView extends JInternalFrame {
         lblPasswordStrength.setText(" ");
         txtNome.requestFocus();
     }
+
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
+
     public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
     }
+
     public void showSuccess(String message) {
         JOptionPane.showMessageDialog(this, message, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
+
     public void close() {
         dispose();
     }

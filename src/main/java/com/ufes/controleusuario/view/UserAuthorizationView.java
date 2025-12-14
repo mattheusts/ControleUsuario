@@ -1,4 +1,5 @@
 package com.ufes.controleusuario.view;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -6,6 +7,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
+
 public class UserAuthorizationView extends JInternalFrame {
     private JTable tblPendingUsers;
     private DefaultTableModel tableModel;
@@ -13,6 +15,7 @@ public class UserAuthorizationView extends JInternalFrame {
     private JButton btnReject;
     private JButton btnRefresh;
     private JLabel lblStatus;
+
     public UserAuthorizationView() {
         super("Autorização de Usuários Pendentes", true, true, true, true);
         setSize(650, 450);
@@ -20,6 +23,7 @@ public class UserAuthorizationView extends JInternalFrame {
         initComponents();
         setLocation(80, 30);
     }
+
     private void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
@@ -69,26 +73,22 @@ public class UserAuthorizationView extends JInternalFrame {
         footerPanel.add(lblStatus, BorderLayout.WEST);
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonsPanel.setBackground(new Color(250, 250, 250));
-        btnReject = createButton("✕ Rejeitar", new Color(180, 60, 60));
-        btnAuthorize = createButton("✓ Autorizar", new Color(46, 125, 50));
+        btnReject = createButton("✕ Rejeitar");
+        btnAuthorize = createButton("✓ Autorizar");
         buttonsPanel.add(btnReject);
         buttonsPanel.add(btnAuthorize);
         footerPanel.add(buttonsPanel, BorderLayout.EAST);
         mainPanel.add(footerPanel, BorderLayout.SOUTH);
         setContentPane(mainPanel);
     }
-    private JButton createButton(String text, Color bgColor) {
+
+    private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.setOpaque(true);
-        button.setBorderPainted(false);
         return button;
     }
+
     public int getSelectedUserId() {
         int selectedRow = tblPendingUsers.getSelectedRow();
         if (selectedRow >= 0) {
@@ -96,6 +96,7 @@ public class UserAuthorizationView extends JInternalFrame {
         }
         return -1;
     }
+
     public String getSelectedUserName() {
         int selectedRow = tblPendingUsers.getSelectedRow();
         if (selectedRow >= 0) {
@@ -103,44 +104,56 @@ public class UserAuthorizationView extends JInternalFrame {
         }
         return null;
     }
+
     public void setTableData(Object[][] data) {
         tableModel.setRowCount(0);
         for (Object[] row : data) {
             tableModel.addRow(row);
         }
     }
+
     public void clearTable() {
         tableModel.setRowCount(0);
     }
+
     public void setStatus(String message) {
         lblStatus.setText(message);
     }
+
     public void setStatusColor(Color color) {
         lblStatus.setForeground(color);
     }
+
     public void setAuthorizeListener(ActionListener listener) {
         btnAuthorize.addActionListener(listener);
     }
+
     public void setRejectListener(ActionListener listener) {
         btnReject.addActionListener(listener);
     }
+
     public void setRefreshListener(ActionListener listener) {
         btnRefresh.addActionListener(listener);
     }
+
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
+
     public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
     }
+
     public void showSuccess(String message) {
         JOptionPane.showMessageDialog(this, message, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
+
     public boolean showConfirm(String message) {
         int result = JOptionPane.showConfirmDialog(this, message, "Confirmação",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         return result == JOptionPane.YES_OPTION;
     }
+
     public void close() {
         dispose();
     }

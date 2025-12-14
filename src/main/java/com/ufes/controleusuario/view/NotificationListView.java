@@ -1,10 +1,12 @@
 package com.ufes.controleusuario.view;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionListener;
+
 public class NotificationListView extends JInternalFrame {
     private JTable tblNotifications;
     private DefaultTableModel tableModel;
@@ -14,6 +16,7 @@ public class NotificationListView extends JInternalFrame {
     private JButton btnClose;
     private JLabel lblStatus;
     private JLabel lblTotal;
+
     public NotificationListView() {
         super("Minhas Notificações", true, true, true, true);
         setSize(700, 500);
@@ -21,6 +24,7 @@ public class NotificationListView extends JInternalFrame {
         initComponents();
         setLocation(140, 70);
     }
+
     private void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
@@ -44,7 +48,7 @@ public class NotificationListView extends JInternalFrame {
         btnRefresh.setFocusPainted(false);
         headerPanel.add(btnRefresh, BorderLayout.EAST);
         mainPanel.add(headerPanel, BorderLayout.NORTH);
-        String[] columns = {"ID", "Data/Hora", "Mensagem", "Status"};
+        String[] columns = { "ID", "Data/Hora", "Mensagem", "Status" };
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -78,9 +82,9 @@ public class NotificationListView extends JInternalFrame {
         footerPanel.add(lblStatus, BorderLayout.WEST);
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonsPanel.setBackground(new Color(250, 250, 250));
-        btnMarkAsRead = createButton("✓ Marcar como Lida", new Color(70, 130, 180));
-        btnMarkAllAsRead = createButton("✓✓ Marcar Todas", new Color(46, 125, 50));
-        btnClose = createButton("Fechar", new Color(100, 100, 100));
+        btnMarkAsRead = createButton("✓ Marcar como Lida");
+        btnMarkAllAsRead = createButton("✓✓ Marcar Todas");
+        btnClose = createButton("Fechar");
         buttonsPanel.add(btnMarkAsRead);
         buttonsPanel.add(btnMarkAllAsRead);
         buttonsPanel.add(btnClose);
@@ -88,16 +92,14 @@ public class NotificationListView extends JInternalFrame {
         mainPanel.add(footerPanel, BorderLayout.SOUTH);
         setContentPane(mainPanel);
     }
-    private JButton createButton(String text, Color bgColor) {
+
+    private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 11));
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return button;
     }
+
     private class StatusCellRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
@@ -121,6 +123,7 @@ public class NotificationListView extends JInternalFrame {
             return c;
         }
     }
+
     private class MultiLineCellRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
@@ -133,6 +136,7 @@ public class NotificationListView extends JInternalFrame {
             return c;
         }
     }
+
     public int getSelectedNotificationId() {
         int selectedRow = tblNotifications.getSelectedRow();
         if (selectedRow >= 0) {
@@ -140,15 +144,18 @@ public class NotificationListView extends JInternalFrame {
         }
         return -1;
     }
+
     public void setTableData(Object[][] data) {
         tableModel.setRowCount(0);
         for (Object[] row : data) {
             tableModel.addRow(row);
         }
     }
+
     public void clearTable() {
         tableModel.setRowCount(0);
     }
+
     public void setTotal(int total, int unread) {
         if (unread > 0) {
             lblTotal.setText("Total: " + total + " (" + unread + " não lidas)");
@@ -158,30 +165,39 @@ public class NotificationListView extends JInternalFrame {
             lblTotal.setForeground(new Color(100, 100, 100));
         }
     }
+
     public void setStatus(String message) {
         lblStatus.setText(message);
     }
+
     public void setMarkAsReadListener(ActionListener listener) {
         btnMarkAsRead.addActionListener(listener);
     }
+
     public void setMarkAllAsReadListener(ActionListener listener) {
         btnMarkAllAsRead.addActionListener(listener);
     }
+
     public void setRefreshListener(ActionListener listener) {
         btnRefresh.addActionListener(listener);
     }
+
     public void setCloseListener(ActionListener listener) {
         btnClose.addActionListener(listener);
     }
+
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
+
     public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Erro", JOptionPane.ERROR_MESSAGE);
     }
+
     public void showSuccess(String message) {
         JOptionPane.showMessageDialog(this, message, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
+
     public void close() {
         dispose();
     }
