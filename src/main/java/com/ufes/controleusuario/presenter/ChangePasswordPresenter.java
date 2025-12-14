@@ -1,4 +1,5 @@
 package com.ufes.controleusuario.presenter;
+
 import com.ufes.controleusuario.model.User;
 import com.ufes.controleusuario.repository.IUserRepository;
 import com.ufes.controleusuario.service.ILoggerService;
@@ -8,17 +9,19 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 public class ChangePasswordPresenter {
     private ChangePasswordView view;
     private IUserRepository userRepository;
     private ILoggerService logger;
     private IPasswordValidator passwordValidator;
     private User currentUser;
+
     public ChangePasswordPresenter(ChangePasswordView view,
-                                   IUserRepository userRepository,
-                                   ILoggerService logger,
-                                   IPasswordValidator passwordValidator,
-                                   User currentUser) {
+            IUserRepository userRepository,
+            ILoggerService logger,
+            IPasswordValidator passwordValidator,
+            User currentUser) {
         this.view = view;
         this.userRepository = userRepository;
         this.logger = logger;
@@ -26,6 +29,7 @@ public class ChangePasswordPresenter {
         this.currentUser = currentUser;
         initListeners();
     }
+
     private void initListeners() {
         view.setSaveListener(this::onSave);
         view.setCancelListener(this::onCancel);
@@ -36,6 +40,7 @@ public class ChangePasswordPresenter {
             }
         });
     }
+
     private void onSave(ActionEvent e) {
         String currentPassword = view.getCurrentPassword();
         String newPassword = view.getNewPassword();
@@ -60,8 +65,9 @@ public class ChangePasswordPresenter {
             view.showError("A nova senha deve ser diferente da senha atual.");
             return;
         }
-        if (!passwordValidator.validate(newPassword)) {
-            view.showError("Senha inválida. A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.");
+        java.util.List<String> errors = passwordValidator.validate(newPassword);
+        if (!errors.isEmpty()) {
+            view.showError("Senha inválida:\n" + String.join("\n", errors));
             logger.log("PASSWORD_CHANGE_FAIL", "Nova senha inválida para: " + currentUser.getNome());
             return;
         }
@@ -77,9 +83,11 @@ public class ChangePasswordPresenter {
             logger.log("PASSWORD_CHANGE_FAIL", "Erro ao alterar senha: " + ex.getMessage());
         }
     }
+
     private void onCancel(ActionEvent e) {
         view.close();
     }
+
     private void updatePasswordStrength() {
         String newPassword = view.getNewPassword();
         if (newPassword.isEmpty()) {
@@ -95,14 +103,21 @@ public class ChangePasswordPresenter {
             view.setPasswordStrength("Forte", new Color(46, 204, 113));
         }
     }
+
     private int calculatePasswordStrength(String password) {
         int strength = 0;
-        if (password.length() >= 8) strength++;
-        if (password.length() >= 12) strength++;
-        if (password.matches(".*[a-z].*")) strength++;
-        if (password.matches(".*[A-Z].*")) strength++;
-        if (password.matches(".*\\d.*")) strength++;
-        if (password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*")) strength++;
+        if (password.length() >= 8)
+            strength++;
+        if (password.length() >= 12)
+            strength++;
+        if (password.matches(".*[a-z].*"))
+            strength++;
+        if (password.matches(".*[A-Z].*"))
+            strength++;
+        if (password.matches(".*\\d.*"))
+            strength++;
+        if (password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*"))
+            strength++;
         return strength;
     }
 }

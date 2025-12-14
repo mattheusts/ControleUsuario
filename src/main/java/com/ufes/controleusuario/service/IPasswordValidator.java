@@ -1,4 +1,7 @@
 package com.ufes.controleusuario.service;
+
+import java.util.List;
+
 public interface IPasswordValidator {
-  boolean validate(String password);
+  List<String> validate(String password);
 }
